@@ -1,7 +1,40 @@
 !!! 5
 html
 	head
-		title= title
-		link(rel='stylesheet', href='/stylesheets/game.css')
-		script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
-	body!= body
+		block title
+			title PingPong
+
+		block stylesheets
+			link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+			link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
+			link(rel='stylesheet', href='/stylesheets/game.css')
+
+		block scripts
+			script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
+			script(type='text/javascript', src='/bootstrap/js/bootstrap.min.js')
+
+
+	body
+		block navbar
+			.navbar.navbar-fixed-top
+				.navbar-inner
+					.container
+						a.brand(href="/") PingPong
+						.nav-collapse
+							ul.nav
+								if !session.user
+									li(class=page=='login' ? 'active' : '')
+										a(href="/login/") Login
+									li(class=page=='registration' ? 'active' : '')
+										a(href="/registration/") Registration
+								else
+									li
+										a(href="/logout/") Logout
+							if session.user
+								.btn-group.pull-right.open
+									a.btn.dropdown-toggle
+										i.icon-user
+										span= session.user.login
+
+		block content
+		block footer
