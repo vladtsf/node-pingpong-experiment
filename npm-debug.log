@@ -1,0 +1,93 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install', '.' ]
+info using npm@1.1.19
+info using node@v0.6.16
+verbose config file /Users/vtsvang/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose config file /usr/local/lib/node_modules/npm/npmrc
+verbose caching /Users/vtsvang/Desktop/Projects/arcanoid/package.json
+verbose loadDefaults application-name@0.0.1
+verbose readDependencies: using package.json deps
+verbose where, deps [ '/Users/vtsvang/Desktop/Projects/arcanoid',
+verbose where, deps   [ 'express', 'jade', 'socket.io', 'mongoose' ] ]
+verbose from cache /Users/vtsvang/Desktop/Projects/arcanoid/package.json
+info preinstall application-name@0.0.1
+verbose caching /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/express/package.json
+verbose loadDefaults express@2.5.8
+verbose caching /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/socket.io/package.json
+verbose caching /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/jade/package.json
+verbose loadDefaults jade@0.25.0
+verbose from cache /Users/vtsvang/Desktop/Projects/arcanoid/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/express/package.json
+verbose from cache /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/jade/package.json
+verbose from cache /Users/vtsvang/Desktop/Projects/arcanoid/node_modules/socket.io/package.json
+verbose cache add [ 'mongoose@>= 2.5.13', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'mongoose@>= 2.5.13',
+silly cache add: name, spec, args   [ 'mongoose@>= 2.5.13', null ] ]
+verbose parsed url { pathname: 'mongoose@', path: 'mongoose@', href: 'mongoose@' }
+silly cache add: name, spec, args [ 'mongoose', '>= 2.5.13', [ 'mongoose', '>= 2.5.13' ] ]
+verbose parsed url { pathname: '=', path: '=', href: '=' }
+verbose addNamed [ 'mongoose', '>= 2.5.13' ]
+verbose addNamed [ null, '>=2.5.13' ]
+silly name, range, hasData [ 'mongoose', '>=2.5.13', false ]
+verbose already installed in /Users/vtsvang/Desktop/Projects/arcanoid skipping express@2.5.8
+verbose already installed in /Users/vtsvang/Desktop/Projects/arcanoid skipping jade@>= 0.0.1
+verbose already installed in /Users/vtsvang/Desktop/Projects/arcanoid skipping socket.io@>= 0.9.6
+verbose raw, before any munging mongoose
+verbose url resolving [ 'https://registry.npmjs.org/', './mongoose' ]
+verbose url resolved https://registry.npmjs.org/mongoose
+http GET https://registry.npmjs.org/mongoose
+http 503 https://registry.npmjs.org/mongoose
+verbose bad json CouchDB temporarily unavailable
+verbose bad json 
+verbose bad json This server is rebooting. It will return automatically soon.
+verbose bad json 
+verbose bad json We have been notified of this incident.
+verbose bad json 
+verbose bad json Feel free to contact us if you have any questions: support@iriscouch.com
+verbose bad json 
+ERR! registry error parsing json
+silly get cb [ 503,
+silly get cb   { 'content-type': 'text/plain', 'content-length': '216' } ]
+ERR! SyntaxError: Unexpected token C
+ERR! CouchDB temporarily unavailable
+ERR! 
+ERR! This server is rebooting. It will return automatically soon.
+ERR! 
+ERR! We have been notified of this incident.
+ERR! 
+ERR! Feel free to contact us if you have any questions: support@iriscouch.com
+ERR!     at Object.parse (native)
+ERR!     at Request._callback (/usr/local/lib/node_modules/npm/lib/utils/npm-registry-client/request.js:150:21)
+ERR!     at Request.callback (/usr/local/lib/node_modules/npm/node_modules/request/main.js:119:22)
+ERR!     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/main.js:605:16)
+ERR!     at Request.emit (events.js:67:17)
+ERR!     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/main.js:564:14)
+ERR!     at IncomingMessage.emit (events.js:88:20)
+ERR!     at HTTPParser.onMessageComplete (http.js:137:23)
+ERR!     at CleartextStream.ondata (http.js:1150:24)
+ERR!     at CleartextStream._push (tls.js:375:27)
+ERR! You may report this log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Darwin 11.3.0
+ERR! command "node" "/usr/local/bin/npm" "install" "."
+ERR! cwd /Users/vtsvang/Desktop/Projects/arcanoid
+ERR! node -v v0.6.16
+ERR! npm -v 1.1.19
+ERR! type unexpected_token
+ERR! arguments [ 'C' ]
+ERR! message Unexpected token C
+ERR! message CouchDB temporarily unavailable
+ERR! message 
+ERR! message This server is rebooting. It will return automatically soon.
+ERR! message 
+ERR! message We have been notified of this incident.
+ERR! message 
+ERR! message Feel free to contact us if you have any questions: support@iriscouch.com
+ERR! message 
+verbose exit [ 1, true ]
