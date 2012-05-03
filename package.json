@@ -9,5 +9,6 @@
     , "mongoose": ">= 2.5.13"
     , "express-form": ">= 0.6.2"
     , "MD5": ">= 0.0.0"
+    , "connect-mongo": ">= 0.1.9"
   }
 }

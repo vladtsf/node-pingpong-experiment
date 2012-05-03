@@ -7,7 +7,8 @@ var
 	  express = require('express')
 	, routes = require('./routes')
 	, form = require("express-form")
-    , field = form.field;
+    , field = form.field
+    , MongoStore = require('connect-mongo')(express);
 
 var app = module.exports = express.createServer();
 
@@ -19,7 +20,12 @@ app.configure(function(){
 	app.set('view options', {layout: false});
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
-	app.use(express.session({ secret: "5a260b696d83f103c13a80a31b04f2b4" }));
+	app.use(express.session({ 
+		secret: "5a260b696d83f103c13a80a31b04f2b4",
+		store: new MongoStore({
+			db: 'test'
+		})
+	}));
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
