@@ -1,0 +1,19 @@
+mixin player(player)
+	tr(data-id=player.id)
+		td
+			i.icon-user
+			span &nbsp;
+			span= player.login
+			span &nbsp;
+			span.badge.badge-inverse= player.score || 0
+		td
+			a(href="#!/play/#{player.id}") Play
+
+mixin profile-label(player)
+	.btn-group.pull-right.open
+		a.btn.dropdown-toggle
+			i.icon-user
+			span &nbsp;
+			span= player.login
+			span &nbsp;
+			span.badge.badge-inverse= player.score || 0

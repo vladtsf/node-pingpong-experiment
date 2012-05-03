@@ -1,0 +1,28 @@
+@import '../../bootstrap/less/bootstrap.less';
+@import '../../bootstrap/less/responsive.less';
+
+#field {
+	@caretWidth: 60px;
+	@caretHeight: 20px;
+	@fieldWidth: 350px;
+	@fieldHeight: 400px;
+
+	background: #ddd;
+	.size(@fieldHeight, @fieldWidth);
+    .border-radius(4px);
+
+    .player {
+    	.size(@caretHeight, @caretWidth);
+    	background: #333;
+    	position: absolute;
+    	margin-left: (@fieldWidth / 2) - (@caretWidth / 2);
+    }
+
+    #player1 {
+    	margin-top: @fieldHeight - @caretHeight;
+    }
+
+    #player2 {
+    	margin-top: 0;
+    }
+}

@@ -5,12 +5,16 @@
 
 var 
 	  express = require('express')
-	, routes = require('./routes')
+	, routes = { 
+		http: require('./routes/http'),
+		api	: require('./routes/api')
+	  }
 	, form = require("express-form")
-    , field = form.field
-    , MongoStore = require('connect-mongo')(express);
+    , field = form.field;
 
-var app = module.exports = express.createServer();
+var
+	  app = module.exports = express.createServer()
+    , Game = require('./lib/game');
 
 // Configuration
 
@@ -22,9 +26,8 @@ app.configure(function(){
 	app.use(express.cookieParser());
 	app.use(express.session({ 
 		secret: "5a260b696d83f103c13a80a31b04f2b4",
-		store: new MongoStore({
-			db: 'test'
-		})
+		key: 'sid',
+		store: require('./lib/session')
 	}));
 	app.use(express.methodOverride());
 	app.use(app.router);
@@ -41,20 +44,23 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', routes.index);
-app.get('/login/', routes.loginForm);
-app.get('/logout/', routes.logout);
-app.get('/registration/', routes.registrationForm)
+app.get('/', routes.http.index);
+app.get('/login/', routes.http.loginForm);
+app.get('/logout/', routes.http.logout);
+app.get('/registration/', routes.http.registrationForm);
+
+app.get('/api/players.json', routes.api.players);
+app.get('/api/whoami.json', routes.api.whoami);
 
 app.post('/registration/', form(
 	  field('login').trim().required().is(/^[a-z0-9]+$/i)
 	, field("password[0]").trim().required()
 	, field("password[1]").trim().required()
-),routes.registration);
+),routes.http.registration);
 
 app.post('/login/', form(
 	  field('login').trim().required()
 	, field("password").trim().required()
-),routes.login);
+),routes.http.login);
 
 app.listen(3000);

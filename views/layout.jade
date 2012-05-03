@@ -5,17 +5,19 @@ html
 			title PingPong
 
 		block stylesheets
-			link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
-			link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
 			link(rel='stylesheet', href='/stylesheets/game.css')
 
 		block scripts
 			script(type='text/javascript', src='/javascripts/jquery-1.7.2.min.js')
+			script(type='text/javascript', src='/javascripts/hashchange.min.js')
 			script(type='text/javascript', src='/bootstrap/js/bootstrap.min.js')
-
+			if session.user
+				script(type='text/javascript', src='/javascripts/socket.io.js')
+				script(type='text/javascript', src='/javascripts/game.js')
 
 	body
 		block navbar
+			include mixins/player
 			.navbar.navbar-fixed-top
 				.navbar-inner
 					.container
@@ -31,10 +33,7 @@ html
 									li
 										a(href="/logout/") Logout
 							if session.user
-								.btn-group.pull-right.open
-									a.btn.dropdown-toggle
-										i.icon-user
-										span= session.user.login
+								mixin profile-label(session.user)
 
 		block content
 		block footer

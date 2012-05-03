@@ -1,1 +1,21 @@
 extends layout
+
+block content
+	include mixins/player
+	.container
+		.hero-unit
+			.container
+				.span4
+					h2 Players
+					br
+					table#opponents.table.table-bordered.table-striped
+							tbody
+								each player in game.players
+									if session.user._id != player.id && player.waiting
+										mixin player(player)
+				.span6
+					h2 Field
+					br
+					#field
+						#player1.player &nbsp;
+						#player2.player &nbsp;

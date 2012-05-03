@@ -13,7 +13,8 @@ exports.index = function(req, res){
 	} else {
 		res.render('index', {
 			page: 'index',
-			session: req.session
+			session: req.session,
+			game:require('../lib/game')
 		});
 	}
 };
@@ -62,6 +63,7 @@ exports.registration = function(req, res) {
 
 				user.login = form.login;
 				user.password = md5(form.password[0]);
+				user.score = 0;
 
 				user.save(function(err) {
 					req.session.user = user;
