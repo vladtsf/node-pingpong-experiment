@@ -16,6 +16,9 @@ var
 	  app = module.exports = express.createServer()
     , Game = require('./lib/game');
 
+var
+	port = process.env.PORT;
+
 // Configuration
 
 app.configure(function(){
@@ -34,7 +37,11 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
 });
 
-app.configure('development', function(){
+if(!port) {
+	port = app.settings.env == 'development' ? 3000 : 80;
+}
+
+app.configure('development', function() {
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
@@ -63,4 +70,4 @@ app.post('/login/', form(
 	, field("password").trim().required()
 ),routes.http.login);
 
-app.listen(3000);
+app.listen(port);
