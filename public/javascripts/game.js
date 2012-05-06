@@ -14,6 +14,11 @@
 		'play' : /^\/play\/([\w\d]+)$/
 	};
 
+	Game.keys = {
+		LEFT		: 37,
+		RIGHT		: 39
+	};
+
 	$
 		.when.apply($, requests)
 		.done(function(undefined, whoami) {
@@ -49,7 +54,7 @@
 									return false;
 								}
 							})
-						});
+						})
 
 					if(location.hash) {
 						$(window).trigger('game:hashchange');
@@ -75,6 +80,32 @@
 						})
 						.on('goto_room', function(room) {
 							location.href = '#!/room/' + room + '/';
+
+							// start game
+							$(document.body)
+								.on('keydown', function(e) {
+									switch(e.keyCode) {
+										case Game.keys.LEFT:
+											console.log(socket)
+											socket.emit('mv', {
+												direction: 'left'
+											});
+
+											return false;
+											break;
+
+										case Game.keys.RIGHT:
+											socket.emit('mv', {
+												direction: 'right'
+											});
+
+											return false;
+											break;
+
+										default:
+											break;
+									}
+								});
 						});
 				});
 			});
