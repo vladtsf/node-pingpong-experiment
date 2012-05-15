@@ -19,6 +19,10 @@
 		RIGHT		: 39
 	};
 
+	Game.speed = {
+		carret: 50
+	};
+
 	$
 		.when.apply($, requests)
 		.done(function(undefined, whoami) {
@@ -26,6 +30,10 @@
 				$(function() {
 					var
 						$opponentsTable = $('#opponents tbody');
+
+					var
+						$player1 = $('#player1'),
+						$player2 = $('#player2')
 
 					Game.whoami = whoami[0];
 
@@ -79,14 +87,13 @@
 							socket.emit('invitation_reply', data);
 						})
 						.on('goto_room', function(room) {
-							location.href = '#!/room/' + room + '/';
+							// location.href = '#!/room/' + room + '/';
 
 							// start game
 							$(document.body)
 								.on('keydown', function(e) {
 									switch(e.keyCode) {
 										case Game.keys.LEFT:
-											console.log(socket)
 											socket.emit('mv', {
 												direction: 'left'
 											});
@@ -106,6 +113,50 @@
 											break;
 									}
 								});
+						})
+						.on('move', function(e) {
+							var positions = {
+								me			: parseInt($player1.css('margin-left').replace('px', '')),
+								opponent	: parseInt($player2.css('margin-left').replace('px', ''))
+							};
+
+							if(e.me) {
+								if(e.direction == 'left') {
+									if(positions.me >= 10) {
+										$player1
+											.stop()
+											.animate({
+												marginLeft	: '-=10px'
+											}, Game.speed.carret);
+									}
+								} else if(e.direction == 'right') {
+									if(positions.me <= 280) {
+										$player1
+											.stop()
+											.animate({
+												marginLeft	: '+=10px'
+											}, Game.speed.carret);
+									}
+								}						
+							} else {
+								if(e.direction == 'left') {
+									if(positions.opponent >= 10) {
+										$player2
+											.stop()
+											.animate({
+												marginLeft	: '-=10px'
+											}, Game.speed.carret);
+									}
+								} else if(e.direction == 'right') {
+									if(positions.opponent <= 280) {
+										$player2
+											.stop()
+											.animate({
+												marginLeft	: '+=10px'
+											}, Game.speed.carret);
+									}
+								}	
+							}
 						});
 				});
 			});
