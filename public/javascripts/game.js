@@ -20,8 +20,17 @@
 	};
 
 	Game.speed = {
-		carret: 50
+		pad: 8
 	};
+
+	Game.net = {
+		clUpdateRate	: 50,
+		srvSyncRate		: 100
+	};
+
+	Game.direction = 0;
+	Game._lastPosition = 0;
+	Game._opponentLastPosition = 145; // костылик
 
 	$
 		.when.apply($, requests)
@@ -87,76 +96,78 @@
 							socket.emit('invitation_reply', data);
 						})
 						.on('goto_room', function(room) {
-							// location.href = '#!/room/' + room + '/';
-
 							// start game
 							$(document.body)
 								.on('keydown', function(e) {
 									switch(e.keyCode) {
 										case Game.keys.LEFT:
-											socket.emit('mv', {
-												direction: 'left'
-											});
+											if(Game.direction == 0) {
+												Game.direction = -1;
+											}
 
 											return false;
 											break;
 
 										case Game.keys.RIGHT:
-											socket.emit('mv', {
-												direction: 'right'
-											});
-
+											if(Game.direction == 0) {
+												Game.direction = 1;
+											}
 											return false;
 											break;
 
 										default:
 											break;
 									}
+								})
+								.on('keyup', function(e) {
+									Game.direction = 0;
 								});
-						})
-						.on('move', function(e) {
-							var positions = {
-								me			: parseInt($player1.css('margin-left').replace('px', '')),
-								opponent	: parseInt($player2.css('margin-left').replace('px', ''))
-							};
 
-							if(e.me) {
-								if(e.direction == 'left') {
-									if(positions.me >= 10) {
-										$player1
-											.stop()
-											.animate({
-												marginLeft	: '-=10px'
-											}, Game.speed.carret);
+
+								// game timers
+								Game._mvInterval = setInterval(
+									function() {
+										var position = parseInt($player1.css('margin-left').replace('px', ''));
+										if(Game.direction) {
+											if((Game.direction == -1 && position >= 3) || (Game.direction == 1 && position <= 287)) {
+												var dest = position + Game.direction * Game.speed.pad;
+
+												$player1.animate({
+													marginLeft	: dest + 'px'
+												}, Game.net.clUpdateRate - 10);
+											}
+										}
 									}
-								} else if(e.direction == 'right') {
-									if(positions.me <= 280) {
-										$player1
-											.stop()
-											.animate({
-												marginLeft	: '+=10px'
-											}, Game.speed.carret);
+								, Game.net.clUpdateRate);
+
+								Game._syncInterval = setInterval(
+									function() {
+										var position = parseInt($player1.css('margin-left').replace('px', ''));
+
+										if(position - Game._lastPosition != 0) {
+											Game._lastPosition = position;
+
+											socket
+												.emit('srv_sync_position', {
+													position	: position
+												});
+										}
 									}
-								}						
-							} else {
-								if(e.direction == 'left') {
-									if(positions.opponent >= 10) {
-										$player2
-											.stop()
-											.animate({
-												marginLeft	: '-=10px'
-											}, Game.speed.carret);
-									}
-								} else if(e.direction == 'right') {
-									if(positions.opponent <= 280) {
-										$player2
-											.stop()
-											.animate({
-												marginLeft	: '+=10px'
-											}, Game.speed.carret);
-									}
-								}	
-							}
+								, Game.net.srvSyncRate);
+						})
+						.on('cl_sync_position', function(e) {
+							var
+								speedCoeff = Math.floor((Game.net.clUpdateRate - 10) / Game.speed.pad),
+								distance = Math.abs(Game._opponentLastPosition - e.position),
+								time = speedCoeff * distance;
+
+							Game._opponentLastPosition = e.position;
+
+							$player2
+								.stop()
+								.animate({
+									marginLeft	: e.position + 'px'
+								}, time);
 						});
 				});
 			});
