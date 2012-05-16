@@ -20,7 +20,7 @@
 	};
 
 	Game.speed = {
-		pad: 8
+		pad: 12
 	};
 
 	Game.net = {
@@ -169,7 +169,7 @@
 							Game._opponentLastPosition = e.position;
 
 							$player2
-								.stop()
+								// .stop()
 								.animate({
 									marginLeft	: e.position + 'px'
 								}, time);
