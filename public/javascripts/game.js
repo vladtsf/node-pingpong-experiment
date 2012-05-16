@@ -101,17 +101,12 @@
 								.on('keydown', function(e) {
 									switch(e.keyCode) {
 										case Game.keys.LEFT:
-											if(Game.direction == 0) {
-												Game.direction = -1;
-											}
-
+											Game.direction = -1;
 											return false;
 											break;
 
 										case Game.keys.RIGHT:
-											if(Game.direction == 0) {
-												Game.direction = 1;
-											}
+											Game.direction = 1;
 											return false;
 											break;
 
@@ -120,7 +115,17 @@
 									}
 								})
 								.on('keyup', function(e) {
-									Game.direction = 0;
+									var key = 0;
+
+									if(e.keyCode == Game.keys.LEFT) {
+										key = -1;
+									} else if (e.keyCode == Game.keys.RIGHT) {
+										key = 1;
+									}
+
+									if(key == Game.direction) {
+										Game.direction = 0;
+									}
 								});
 
 
