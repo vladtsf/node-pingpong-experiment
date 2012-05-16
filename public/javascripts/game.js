@@ -25,7 +25,7 @@
 
 	Game.net = {
 		clUpdateRate	: 50,
-		srvSyncRate		: 100
+		srvSyncRate		: 60
 	};
 
 	Game.direction = 0;
@@ -169,7 +169,6 @@
 							Game._opponentLastPosition = e.position;
 
 							$player2
-								// .stop()
 								.animate({
 									marginLeft	: e.position + 'px'
 								}, time);
