@@ -3,12 +3,14 @@ window.Ball = (function(sock) {
 		this.animationTrac = [];
 		this.$selector = $('.ball');
 		this.sock = sock;
+		this.$player1 = $('#player1')
 	};
 	
 	Ball.prototype = {
 		
 		endAnimate:	function(){
-			this.sock.emit('checkGoal');				
+			var position = parseInt(this.$player1.css('margin-left').replace('px', ''));
+			this.sock.emit('checkGoal',position);				
 		},
 		
 		Iteration: function(){			
@@ -25,7 +27,7 @@ window.Ball = (function(sock) {
 				)
 				
 			} else {
-				if (this.$selector.css("margin-top") == "360px"){
+				if (this.$selector.css("margin-top") == "364px"){
 					this.endAnimate();	
 				}
 			}			

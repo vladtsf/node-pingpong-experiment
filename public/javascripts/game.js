@@ -25,7 +25,7 @@
 
 	Game.net = {
 		clUpdateRate	: 50,
-		srvSyncRate		: 60
+		srvSyncRate		: 100
 	};
 
 	Game.direction = 0;
