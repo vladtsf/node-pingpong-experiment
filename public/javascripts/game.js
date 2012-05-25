@@ -32,6 +32,8 @@
 	Game._lastPosition = 0;
 	Game._opponentLastPosition = 145; // костылик
 
+    
+    
 	$
 		.when.apply($, requests)
 		.done(function(undefined, whoami) {
@@ -43,7 +45,9 @@
 					var
 						$player1 = $('#player1'),
 						$player2 = $('#player2')
-
+                        
+                    Game.ball = new Ball(socket);
+                    
 					Game.whoami = whoami[0];
 
 					Game.actions = {
@@ -76,8 +80,11 @@
 					if(location.hash) {
 						$(window).trigger('game:hashchange');
 					}
-
+					
 					socket
+						.on('newTrack', function(e) {
+							Game.ball.setTrac(e);								
+						})
 						.on('player_join', function(e) {
 							$opponentsTable
 								.prepend('<tr data-id="' + e.id + '"><td><i class="icon-user"></i><span>&nbsp;</span><span>' + e.login + '</span><span>&nbsp;</span><span class="badge badge-inverse">' + (e.score || 0) + '</span></td><td><a href="#!/play/' + e.id + '">Play</a></td></tr>')
@@ -94,6 +101,11 @@
 							};
 
 							socket.emit('invitation_reply', data);
+						})
+						.on('score',function(scores){
+							$('.score .pl0').html(scores.pl0);
+							$('.score .pl1').html(scores.pl1);
+							
 						})
 						.on('goto_room', function(room) {
 							// start game
