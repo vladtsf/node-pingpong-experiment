@@ -10,13 +10,13 @@
 	@fieldWidth: 350px;
 	@fieldHeight: 400px;
 
-	background: #ddd;
+	background: #333;
 	.size(@fieldHeight, @fieldWidth);
     .border-radius(4px);
 
     .player {
     	.size(@caretHeight, @caretWidth);
-    	background: #333;
+    	background: #aaa;
     	position: absolute;
     	margin-left: (@fieldWidth / 2) - (@caretWidth / 2);
     }
@@ -32,11 +32,10 @@
     .ball{
 		display: block;
 		position: absolute;
-		background: #000;
-		width: 20px;
-		height: 20px;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
+		background: url('/imgs/ball.png');
+		width: 16px;
+		height: 16px;
+		
 	}
 	
 }
