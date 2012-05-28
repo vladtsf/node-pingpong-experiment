@@ -5,21 +5,24 @@
 
 var 
 	  express = require('express')
-	, routes = { 
-		http: require('./routes/http'),
-		api	: require('./routes/api')
-	  }
 	, form = require("express-form")
-    , field = form.field;
-
-var
-	  app = module.exports = express.createServer()
-    , Game = require('./lib/game');
-
-var
-	port = process.env.PORT;
+   , field = form.field
+   , app = module.exports = express.createServer()
+   , util = require('util');
 
 // Configuration
+
+app.configure('development', function() {
+	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	app.set('port', 3000);
+	app.set('mongobase', 'mongodb://localhost/test');
+});
+
+app.configure('production', function(){
+	app.use(express.errorHandler());
+	app.set('port', 80);
+	app.set('mongobase', util.format('mongodb://%s:%s@%s:%d/%s', process.env.DBUSER, process.env.DBPASSWORD, process.env.DBHOST, process.env.DBPORT, process.env.DBBASE));
+});
 
 app.configure(function(){
 	app.set('views', __dirname + '/views');
@@ -37,37 +40,34 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/public'));
 });
 
-if(!port) {
-	port = app.settings.env == 'development' ? 3000 : 80;
-}
-
-app.configure('development', function() {
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-	app.use(express.errorHandler());
-});
-
 // Routes
 
-app.get('/', routes.http.index);
-app.get('/login/', routes.http.loginForm);
-app.get('/logout/', routes.http.logout);
-app.get('/registration/', routes.http.registrationForm);
+app.configure(function() {
+	var routes = {
+			http: require('./routes/http'),
+			api	: require('./routes/api')
+		};
 
-app.get('/api/players.json', routes.api.players);
-app.get('/api/whoami.json', routes.api.whoami);
+	app.get('/', routes.http.index);
+	app.get('/login/', routes.http.loginForm);
+	app.get('/logout/', routes.http.logout);
+	app.get('/registration/', routes.http.registrationForm);
 
-app.post('/registration/', form(
-	  field('login').trim().required().is(/^[a-z0-9]+$/i)
-	, field("password[0]").trim().required()
-	, field("password[1]").trim().required()
-),routes.http.registration);
+	app.get('/api/players.json', routes.api.players);
+	app.get('/api/whoami.json', routes.api.whoami);
 
-app.post('/login/', form(
-	  field('login').trim().required()
-	, field("password").trim().required()
-),routes.http.login);
+	app.post('/registration/', form(
+		  field('login').trim().required().is(/^[a-z0-9]+$/i)
+		, field("password[0]").trim().required()
+		, field("password[1]").trim().required()
+	),routes.http.registration);
 
-app.listen(port);
+	app.post('/login/', form(
+		  field('login').trim().required()
+		, field("password").trim().required()
+	),routes.http.login);
+});
+
+app.listen(app.settings.port, function() {
+	console.log("Listening on port %d in %s mode", app.address().port, app.settings.env);
+});

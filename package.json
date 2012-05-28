@@ -1,7 +1,17 @@
 {
-    "name": "application-name"
+    "name": "pingpong.tsvang.ru"
   , "version": "0.0.1"
   , "private": true
+  , "subdomain": "pingpong-tsvangru"
+  , "domains": [
+      "pingpong.tsvang.ru"
+  ]
+  , "scripts": {
+    "start": "app.js"
+  },
+  "engines": {
+    "node": "0.6.x"
+  }
   , "dependencies": {
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
@@ -9,7 +19,7 @@
     , "mongoose": ">= 2.5.13"
     , "express-form": ">= 0.6.2"
     , "MD5": ">= 0.0.0"
-    , "connect-mongo": ">= 0.1.9"
     , "connect": ">= 1.8.7"
+    , "connect-mongodb": ">= 1.1.3"
   }
 }
